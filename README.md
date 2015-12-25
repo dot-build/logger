@@ -20,11 +20,11 @@ In your app code, you can enable/disable the logger at any moment:
 ```js
 
 var logger = require('ulogger')
-logger.enabled();
+logger.enable();
 
 // ...
 
-logger.enabled(false);
+logger.disable();
 
 ```
 
@@ -36,6 +36,25 @@ Same goes for a web app, but in the `window` object:
 
 ```js
 window.DEBUG=1;
+```
+
+## Log levels
+
+You can adjust the logging level from error to debug. The log whose values are
+higher than the level won't be printed.
+
+```js
+// 0 = error
+// 1 = warn
+// 2 = info
+// 3 = log
+// 4 = debug
+
+var level = 2;
+logger.logLevel(level);
+
+// only error, warn and info logs will be printed from now on
+
 ```
 
 Happy debugging!
