@@ -1,6 +1,6 @@
 {
   "name": "ulogger",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Tiny logger utility for Node.JS and the browser",
   "main": "ulogger.js",
   "scripts": {
