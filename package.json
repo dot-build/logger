@@ -1,0 +1,19 @@
+{
+  "name": "ulogger",
+  "version": "0.0.0",
+  "description": "Tiny logger utility for Node.JS and the browser",
+  "main": "ulogger.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dot-build/ulogger.git"
+  },
+  "author": "Darlan Alves <me@darlanalv.es>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dot-build/ulogger/issues"
+  },
+  "homepage": "https://github.com/dot-build/ulogger#readme"
+}
