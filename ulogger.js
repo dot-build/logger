@@ -5,6 +5,7 @@ function Logger (name) {
 }
 
 var isEnabled = false;
+var isDateEnabled = false;
 var methods = ['error', 'warn', 'info', 'log', 'debug'];
 var enabledMethods = [];
 
@@ -22,15 +23,20 @@ methods.forEach(function (method) {
     }
 
     function datetime () {
+        if (!isDateEnabled) return '';
+
         var date = new Date();
-        return (date.toISOString || date.toString).call(date);
+        var dateStr = (date.toISOString || date.toString).call(date);
+
+        return dateStr;
     }
 
+    var logType = '[' + method.charAt(0) + ']';
     function methodWrapper () {
         if (!isLogEnabled()) return;
 
         /* jshint validthis: true */
-        var prefix = '[' + method + ']['+datetime() + ']<' + this._name + '>';
+        var prefix = logType + datetime() + '<' + this._name + '>';
         var fn = console[method] || console.log;
 
         var args = [].slice.call(arguments);
@@ -57,12 +63,16 @@ exports = module.exports = function (name) {
     return loggers[name];
 };
 
-exports.enable = function (value) {
-    isEnabled = value !== undefined && !!value || true;
+exports.enable = function () {
+    isEnabled = true;
 };
 
 exports.disable = function () {
     isEnabled = false;
+};
+
+exports.enableDate = function (value) {
+    isDateEnabled = value !== undefined && !!value || true;
 };
 
 /**

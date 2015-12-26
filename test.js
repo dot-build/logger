@@ -9,3 +9,7 @@ log.error('this error should be printed');
 ulogger.logLevel(4);
 
 log.debug('this debugging info should be printed!');
+
+ulogger.enableDate();
+
+log.debug('this message should have a date on it');
