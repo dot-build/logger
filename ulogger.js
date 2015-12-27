@@ -1,4 +1,5 @@
 'use strict';
+/* jshint node: true */
 
 function Logger (name) {
     this._name = name;
@@ -6,6 +7,7 @@ function Logger (name) {
 
 var isEnabled = false;
 var isDateEnabled = false;
+var isPrefixEnabled = false;
 var methods = ['error', 'warn', 'info', 'log', 'debug'];
 var enabledMethods = [];
 
@@ -28,15 +30,20 @@ methods.forEach(function (method) {
         var date = new Date();
         var dateStr = (date.toISOString || date.toString).call(date);
 
-        return dateStr;
+        return '[' + dateStr + ']';
     }
 
-    var logType = '[' + method.charAt(0) + ']';
+    function logType () {
+        if (!isPrefixEnabled) return '';
+
+        return '[' + method + ']';
+    }
+
     function methodWrapper () {
         if (!isLogEnabled()) return;
 
         /* jshint validthis: true */
-        var prefix = logType + datetime() + '<' + this._name + '>';
+        var prefix = logType() + datetime() + '<' + this._name + '>';
         var fn = console[method] || console.log;
 
         var args = [].slice.call(arguments);
@@ -73,6 +80,10 @@ exports.disable = function () {
 
 exports.enableDate = function (value) {
     isDateEnabled = value !== undefined && !!value || true;
+};
+
+exports.enablePrefix = function (value) {
+    isPrefixEnabled = value !== undefined && !!value || true;
 };
 
 /**

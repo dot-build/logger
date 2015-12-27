@@ -13,3 +13,7 @@ log.debug('this debugging info should be printed!');
 ulogger.enableDate();
 
 log.debug('this message should have a date on it');
+
+ulogger.enablePrefix();
+
+log.info('this message should have a "info" prefix on it');
