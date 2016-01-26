@@ -1,5 +1,4 @@
 'use strict';
-/* jshint node: true */
 
 function Logger (name) {
     this._name = name;
@@ -38,7 +37,6 @@ methods.forEach(function (method) {
             caller = this._name + ':' + getCaller();
         }
 
-        /* jshint validthis: true */
         var prefix = logType() + datetime() + '<' + caller + '>';
         var args = [].slice.call(arguments);
 
@@ -74,15 +72,25 @@ function isLogEnabled (method) {
 
 function getCaller() {
     var stack = Error().stack;
+    var caller;
 
     if (!stack) return '';
 
-    stack = String(stack).split('\n');
-    var caller = stack[4];
+    if (stack.indexOf('@') !== -1) {
+        // firefox stack
+        caller = stack.split('\n')[2];
+        caller = caller.split('@');
+        caller = caller[0];
+    } else {
+        // chrome stack
+        caller = stack.split('\n')[4];
+        caller = caller.trim();
+        caller = caller.split('(');
+        caller = caller[0];
+        caller = caller.replace('at ', '');
+    }
 
-    if (!caller) return '';
-
-    return caller.slice(caller.indexOf('at') + 3, caller.indexOf('(') - 1);
+    return caller || '';
 }
 
 var loggers = {};
