@@ -5,47 +5,41 @@ function Logger (name) {
     this._name = name;
 }
 
-var isEnabled = false;
-var isDateEnabled = false;
-var isPrefixEnabled = false;
+var config = {
+    enabled: false,
+    date: false,
+    prefix: false,
+    caller: false,
+    output: null
+};
+
 var methods = ['error', 'warn', 'info', 'log', 'debug'];
 var enabledMethods = [];
 
 methods.forEach(function (method) {
     enabledMethods[method] = true;
 
-    function isLogEnabled () {
-        var logEnabled = (
-            isEnabled ||
-            (typeof window !== 'undefined' && window.DEBUG) ||
-            (typeof process !== 'undefined' && process.env && process.env.DEBUG)
-        );
-
-        return logEnabled && enabledMethods[method];
-    }
-
-    function datetime () {
-        if (!isDateEnabled) return '';
-
-        var date = new Date();
-        var dateStr = (date.toISOString || date.toString).call(date);
-
-        return '[' + dateStr + ']';
+    if (!console[method]) {
+        console[method] = console.log;
     }
 
     function logType () {
-        if (!isPrefixEnabled) return '';
+        if (!config.prefix) return '';
 
         return '[' + method + ']';
     }
 
-    function methodWrapper () {
-        if (!isLogEnabled()) return;
+    Logger.prototype[method] = function methodWrapper () {
+        if (!isLogEnabled(method)) return;
+
+        var caller = this._name;
+
+        if (config.caller) {
+            caller = this._name + ':' + getCaller();
+        }
 
         /* jshint validthis: true */
-        var prefix = logType() + datetime() + '<' + this._name + '>';
-        var fn = console[method] || console.log;
-
+        var prefix = logType() + datetime() + '<' + caller + '>';
         var args = [].slice.call(arguments);
 
         if (typeof args[0] === 'string') {
@@ -54,11 +48,42 @@ methods.forEach(function (method) {
             args.unshift(prefix);
         }
 
-        fn.apply(console, args);
-    }
-
-    Logger.prototype[method] = methodWrapper;
+        var output = config.output || console[method];
+        output.apply(console, args);
+    };
 });
+
+function datetime () {
+    if (!config.date) return '';
+
+    var date = new Date();
+    var dateStr = (date.toISOString || date.toString).call(date);
+
+    return '[' + dateStr + ']';
+}
+
+function isLogEnabled (method) {
+    var logEnabled = (
+        config.enabled ||
+        (typeof window !== 'undefined' && window.DEBUG) ||
+        (typeof process !== 'undefined' && process.env && process.env.DEBUG)
+    );
+
+    return logEnabled && enabledMethods[method];
+}
+
+function getCaller() {
+    var stack = Error().stack;
+
+    if (!stack) return '';
+
+    stack = String(stack).split('\n');
+    var caller = stack[4];
+
+    if (!caller) return '';
+
+    return caller.slice(caller.indexOf('at') + 3, caller.indexOf('(') - 1);
+}
 
 var loggers = {};
 
@@ -71,19 +96,20 @@ exports = module.exports = function (name) {
 };
 
 exports.enable = function () {
-    isEnabled = true;
+    config.enabled = true;
 };
 
 exports.disable = function () {
-    isEnabled = false;
+    config.enabled = false;
 };
 
-exports.enableDate = function (value) {
-    isDateEnabled = value !== undefined && !!value || true;
-};
+exports.config = config;
 
-exports.enablePrefix = function (value) {
-    isPrefixEnabled = value !== undefined && !!value || true;
+/**
+ * @param {Function} output     Function to call with every log message
+ */
+exports.setOutput = function (output) {
+    config.output = output || null;
 };
 
 /**
