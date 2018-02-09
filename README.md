@@ -1,60 +1,34 @@
-# uLogger
+# ulogger
 
-Tiny logger utility for Node.JS and the browser
+Tiny logger utility for Node.JS and web apps
 
 ## Usage
 
 ```js
+import { Logger, LogLevel } from '@dot-build/ulogger'
+const logger = new Logger('any-name');
 
-var logger = require('ulogger')('my-unit');
+logger.info('Unicorns are real');
 
-logger.log('A message inside my unit');
-logger.error('Oops, my unit has an error!');
+// output to `console.log`: <any-name> Unicorns are real
 
+// Optional. Can be None, Error, Warning, Info, Log, Debug
+Logger.setLevel(LogLevel.Info);
 ```
 
-## Enable/disable
+## Using a different log output
 
-In your app code, you can enable/disable the logger at any moment:
+Implement LogOutput interface:
 
 ```js
+import { Logger, LogOutput } from '@dot-build/ulogger';
 
-var logger = require('ulogger')
-logger.enable();
+class CustomOutput implements LogOutput {
+  log(...args) {
+      // do something with arguments
+  }
+}
 
-// ...
-
-logger.disable();
-
-```
-
-On Node.JS, you can start your app with an environment flag:
-
-`DEBUG=1 node my-app.js`
-
-Same goes for a web app, but in the `window` object:
-
-```js
-window.DEBUG=1;
-```
-
-## Log levels
-
-You can adjust the logging level from error to debug. The log whose values are
-higher than the level won't be printed.
-
-```js
-// 0 = error
-// 1 = warn
-// 2 = info
-// 3 = log
-// 4 = debug
-
-var level = 2;
-logger.logLevel(level);
-
-// only error, warn and info logs will be printed from now on
+Logger.setOutput(new CustomOutput());
 
 ```
-
-Happy debugging!
