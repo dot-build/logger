@@ -1,13 +1,17 @@
+sudo: required
+addons:
+  chrome: stable
 language: node_js
 cache:
   directories:
     - ~/.npm
+    - node_modules
 notifications:
   email: false
 node_js:
   - '9'
 script:
-  - npm run build
+  - npm run build && CHROME_HEADLESS=1 npm run test
 after_success:
   - npm run semantic-release
 branches:
