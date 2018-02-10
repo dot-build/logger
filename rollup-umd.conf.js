@@ -1,11 +1,11 @@
 export default {
-  input: 'tmp/esm5/ngx-logger.js',
+  input: 'tmp/esm5/logger.js',
   output: {
-    file: 'dist/bundles/ngx-logger.umd.js',
+    file: 'dist/bundles/logger.umd.js',
     format: 'umd'
   },
-  name: 'ngxLogger',
-  external: ['@angular/core' ],
+  name: 'logger',
+  external: [],
   globals: {
     // Angular dependencies
     '@angular/animations': 'ng.animations',

@@ -16,7 +16,7 @@
     "annotateForClosureCompiler": true,
     "strictMetadataEmit": true,
     "skipTemplateCodegen": true,
-    "flatModuleOutFile": "ngx-logger.js",
-    "flatModuleId": "ngx-logger"
+    "flatModuleOutFile": "logger.js",
+    "flatModuleId": "logger"
   }
 }

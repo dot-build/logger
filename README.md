@@ -1,11 +1,11 @@
-# ulogger
+# @dotbuild/logger
 
 Tiny logger utility for Node.JS and web apps
 
 ## Usage
 
 ```js
-import { Logger, LogLevel } from '@dot-build/ulogger'
+import { Logger, LogLevel } from '@dot-build/logger'
 const logger = new Logger('any-name');
 
 logger.info('Unicorns are real');
@@ -21,7 +21,7 @@ Logger.setLevel(LogLevel.Info);
 Implement LogOutput interface:
 
 ```js
-import { Logger, LogOutput } from '@dot-build/ulogger';
+import { Logger, LogOutput } from '@dot-build/logger';
 
 class CustomOutput implements LogOutput {
   log(...args) {
