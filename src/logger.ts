@@ -64,10 +64,10 @@ export class Logger {
 
 const levelKey = 'LOG_LEVEL';
 
-if (typeof window !== undefined && levelKey in window) {
+if (typeof window !== 'undefined' && levelKey in window) {
     loggerSettings.logLevel = window[levelKey];
 }
 
-if (typeof process !== undefined && levelKey in process.env) {
+if (typeof process !== 'undefined' && levelKey in process.env) {
     loggerSettings.logLevel = process.env[levelKey];
 }
