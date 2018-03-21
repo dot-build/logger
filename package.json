@@ -19,7 +19,6 @@
     "build:min": "uglifyjs dist/bundles/logger.umd.js -c -m -o dist/bundles/logger.umd.min.js",
     "move:assets": "cp -r tmp/esm2015/*.d.ts tmp/esm2015/src tmp/esm2015/*.json package.json README.md dist/ && rm dist/src/*.js",
     "clean": "rm -rf dist/ && rm -rf tmp/ && rm -rf coverage/",
-    "copyPackageJson": "cp package.json dist",
     "semantic-release": "semantic-release",
     "test": "ng test --single-run --code-coverage true",
     "tdd": "ng test --code-coverage true",
@@ -29,7 +28,6 @@
     "access": "public"
   },
   "release": {
-    "verifyConditions": [],
     "publish": {
         "path": "@semantic-release/npm",
         "pkgRoot": "dist"
